@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-  <title>Legacy Barber — My Bookings</title>
+  <title>Legacy Barber — Bookings</title>
   <meta name="description" content="View, reschedule or cancel your barber appointments saved on this device." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,19 +12,27 @@
 </head>
 <body>
   <nav class="nav container">
-    <a href="index.html" class="logo-link">
-      <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
-      <div class="logo-primary">Legacy</div>
-    </a>
-    <div class="nav-links">
-      <a class="nav-btn ghost" href="booking.html">+ NEW BOOKING</a>
-      <a class="nav-btn" href="index.html">← HOME</a>
-    </div>
-  </nav>
+  <a href="index.html" class="logo-link">
+    <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
+    <div class="logo-primary">Legacy</div>
+  </a>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="nav-links" id="navLinks">
+    <a class="nav-btn ghost" href="booking.html">+ NEW BOOKING</a>
+    <a class="nav-btn ghost" href="gallery.html">GALLERY</a>
+    <a class="nav-btn" href="index.html">← HOME</a>
+  </div>
+</nav>
 
   <section class="book-section container">
     <div class="book-head">
-      <h2>My Bookings</h2>
+      <h2>Bookings</h2>
       <p>Appointments saved on this device. Reschedule or cancel anytime.</p>
     </div>
 
@@ -67,7 +75,7 @@
           <ul class="footer-list">
             <li><a href="index.html">Home</a></li>
             <li><a href="booking.html">Book Now</a></li>
-            <li><a href="my-bookings.html">My Bookings</a></li>
+            <li><a href="my-bookings.html">Bookings</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -91,6 +99,7 @@
     </div>
   </footer>
 
+  <script src="script.js"></script>
   <script src="my-bookings.js"></script>
 </body>
 </html>
