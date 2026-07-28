@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+  <title>Legacy Barber — Book Your Appointment</title>
+  <meta name="description" content="Book your haircut appointment — choose date, cut, time slot, and appointment type." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="nav container">
+    <a href="index.html" class="logo-link">
+  <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
+  <div class="logo-primary">Legacy</div>
+</a>
+    <div class="nav-links">
+      <a class="nav-btn ghost" href="my-bookings.html">MY BOOKINGS</a>
+      <a class="nav-btn" href="index.html">← HOME</a>
+    </div>
+  </nav>
+
+  <section class="book-section container">
+    <div class="book-head">
+      <h2>Book Your Appointment</h2>
+      <p>Fill in the details and claim your time.</p>
+    </div>
+
+    <form id="bookingForm" class="card">
+      <!-- Progress Bar -->
+      <div class="progress-steps">
+        <div class="progress-step active" data-step="1">
+          <span class="step-number">1</span>
+          <span class="step-label">Date & Cut</span>
+        </div>
+        <div class="progress-step" data-step="2">
+          <span class="step-number">2</span>
+          <span class="step-label">Time & Type</span>
+        </div>
+        <div class="progress-step" data-step="3">
+          <span class="step-number">3</span>
+          <span class="step-label">Your Details</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Date & Cut -->
+      <div class="form-step" data-step="1">
+        <label class="field-label">Select Date</label>
+        <input type="date" id="date" class="text-input" required />
+
+        <label class="field-label">Choose Haircut</label>
+        <div class="grid-2" id="cuts">
+          <div class="option" data-cut="Fade">
+            <div class="opt-title">Fade</div>
+            <div class="opt-desc">Clean blended sides</div>
+          </div>
+          <div class="option" data-cut="Taper Fade">
+            <div class="opt-title">Taper Fade</div>
+            <div class="opt-desc">Sharp tapered edges</div>
+          </div>
+          <div class="option" data-cut="Buzz Cut">
+            <div class="opt-title">Buzz Cut</div>
+            <div class="opt-desc">Short & low maintenance</div>
+          </div>
+          <div class="option" data-cut="Afro Trim">
+            <div class="opt-title">Afro Trim</div>
+            <div class="opt-desc">Shaped & defined</div>
+          </div>
+          <div class="option" data-cut="Afro Trim">
+            <div class="opt-title">Dreadlocks</div>
+            <div class="opt-desc">Shaped & defined</div>
+          </div>
+          <div class="option" data-cut="Afro Trim">
+            <div class="opt-title">Braids</div>
+            <div class="opt-desc">Shaped & defined</div>
+          </div>
+          <div class="option" data-cut="Afro Trim">
+            <div class="opt-title">Mohawk</div>
+            <div class="opt-desc">Shaped & defined</div>
+          </div>
+        </div>
+        
+        <button type="button" class="step-next" data-next="2">Next →</button>
+      </div>
+
+      <!-- Step 2: Time & Type -->
+      <div class="form-step" data-step="2" style="display:none;">
+        <label class="field-label">Available Time Slots</label>
+        <div id="slots" class="slots">
+          <div class="slot" data-time="09:00">09:00</div>
+          <div class="slot" data-time="10:00">10:00</div>
+          <div class="slot" data-time="11:00">11:00</div>
+          <div class="slot" data-time="12:00">12:00</div>
+          <div class="slot" data-time="13:00">13:00</div>
+          <div class="slot" data-time="14:00">14:00</div>
+          <div class="slot" data-time="15:00">15:00</div>
+          <div class="slot" data-time="16:00">16:00</div>
+        </div>
+
+        <label class="field-label">Appointment Type</label>
+        <div class="grid-2" id="types">
+          <div class="option" data-type="House Call">
+            <div class="opt-title">House Call</div>
+            <div class="opt-desc">Barber travels to you</div>
+          </div>
+          <div class="option" data-type="Shop Visit">
+            <div class="opt-title">Shop Visit</div>
+            <div class="opt-desc">Come to the chair</div>
+          </div>
+        </div>
+
+        <!-- Shop Location Map -->
+        <div id="shopMapSection" style="display: none; margin-top: 24px;">
+          <label class="field-label">Shop Location</label>
+          <div class="map-container">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.2!2d28.0368!3d-26.1025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e950c3b5b5b5b5b%3A0xabcdef1234567890!2s38%20Wessel%20Road%2C%20Sandton%2C%202191!5e0!3m2!1sen!2sza!4v1720000000000" 
+              width="100%" height="320" style="border:0; border-radius: 22px;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+          <p class="field-hint">
+            📍 38 Wessel Road, Sandton, 2191 • 
+            <strong>Open Tue–Sat 9:00 AM – 5:00 PM</strong>
+          </p>
+        </div>
+
+        <!-- House Call Service Area Map -->
+        <div id="houseCallMapSection" style="display: none; margin-top: 24px;">
+          <label class="field-label">Service Area — House Calls</label>
+          <div class="map-container">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114700!2d28.0368!3d-26.1025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e950c3b5b5b5b5b%3A0xabcdef1234567890!2sSandton%2C%20Gauteng!5e0!3m2!1sen!2sza!4v1720000000000" 
+              width="100%" height="340" style="border:0; border-radius: 22px;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+          <p class="field-hint">
+            📍 We cover Sandton, Rosebank, Hyde Park, Fourways, Bryanston, Randburg & surrounding northern suburbs.
+          </p>
+        </div>
+
+        <div id="addressSection" style="display: none;">
+          <label class="field-label">House Call Address</label>
+          <div class="address-input-group">
+            <input type="text" id="streetAddress" class="text-input" placeholder="Street address, house number" />
+            <input type="text" id="citySuburb" class="text-input" placeholder="City / Suburb" />
+            <input type="text" id="postalCode" class="text-input" placeholder="Postal code" />
+          </div>
+          <p class="field-hint">Full address required for house call. Private & secure.</p>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" class="step-prev" data-prev="1">← Back</button>
+          <button type="button" class="step-next" data-next="3">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Your Details -->
+      <div class="form-step" data-step="3" style="display:none;">
+        <label class="field-label">Your Name</label>
+        <input type="text" id="clientName" class="text-input" placeholder="Name Surname" required />
+
+        <label class="field-label">Phone Number (WhatsApp)</label>
+        <input type="tel" id="clientPhone" class="text-input" placeholder="0612345678" required/>
+        <p class="field-hint">We'll send a WhatsApp confirmation if provided</p>
+
+        <!-- Booking Summary -->
+        <div class="booking-summary" id="bookingSummary">
+          <h4>Booking Summary</h4>
+          <div id="summaryDetails"></div>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" class="step-prev" data-prev="2">← Back</button>
+          <button type="submit" class="submit-btn">Book Appointment</button>
+        </div>
+      </div>
+
+      <p id="error" class="msg-error"></p>
+      <p id="message" class="msg-ok"></p>
+    </form>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo-secondary">Legacy</div>
+          <p class="footer-tag">Walk in a king, walk out sharper.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="booking.html">Book Now</a></li>
+            <li><a href="my-bookings.html">My Bookings</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul class="footer-list">
+            <li><a href="tel:+27673666047">+27 67 366 6047</a></li>
+            <li>📍 38 Wessel Road, Sandton</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Hours</h4>
+          <ul class="footer-list">
+            <li>Mon–Sat: 9:00 AM – 5:00 PM</li>
+            <li>Sun: Closed</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 Legacy Barber. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

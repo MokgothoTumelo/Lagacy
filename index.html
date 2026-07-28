@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+  <title>Legacy Barber Shop — Reserve Your Cut</title>
+  <meta name="description" content="Fresh fades, tapers, buzz cuts & afro trims. Book a house call or shop visit. Mobile-friendly booking system." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <img class="hero-bg" src="secondary-logo.png" alt="" />
+    <div class="hero-overlay"></div>
+
+    <nav class="nav container">
+  <a href="index.html" class="logo-link">
+    <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
+    <div class="logo-primary">Legacy</div>
+  </a>
+
+  <!-- Hamburger button (visible only on phone) -->
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="nav-links" id="navLinks">
+    <a class="nav-btn ghost" href="my-bookings.html">MY BOOKINGS</a>
+    <a class="nav-btn" href="booking.html">BOOK CUT</a>
+    <a class="nav-btn ghost" href="gallery.html">GALLERY</a>
+  </div>
+</nav>
+
+    <div class="hero-content container">
+      <p class="eyebrow">EST. SHARP CUTS</p>
+      <h1 class="hero-title">Legacy Barber</h1>
+      <p class="hero-sub">Precision fades, classic tapers, and sharp lineups. Book a house call or visit the chair — your next clean cut is a few taps away.</p>
+      <a class="btn-gold" href="booking.html">Reserve Your Chair</a>
+    </div>
+  </header>
+
+  <section class="steps container">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Pick a date</h3>
+      <p>Choose the day that works for you.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Choose your cut</h3>
+      <p>Fade, taper, buzz or afro trim.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Lock your slot</h3>
+      <p>Grab an open time and confirm.</p>
+    </div>
+  </section>
+
+  <!-- Location Teaser -->
+  <section class="location-teaser container">
+    <h2>Our Location</h2>
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.2!2d28.0368!3d-26.1025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e950c3b5b5b5b5b%3A0xabcdef1234567890!2s38%20Wessel%20Road%2C%20Sandton%2C%202191!5e0!3m2!1sen!2sza!4v1720000000000" 
+        width="100%" 
+        height="300" 
+        style="border:0; border-radius: 22px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+    </div>
+    <p>
+      📍 38 Wessel Road, Sandton, 2191<br />
+      House calls available across Sandton, Rosebank, Fourways, Bryanston & surrounding northern suburbs.
+    </p>
+    <div style="text-align: center; margin-top: 24px;">
+      <a href="booking.html" class="btn-gold">Book Now</a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo-secondary">Legacy</div>
+          <p class="footer-tag">Walk in a king, walk out sharper.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="booking.html">Book Now</a></li>
+            <li><a href="my-bookings.html">My Bookings</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul class="footer-list">
+            <li><a href="tel:+27673666047">+27 67 366 6047</a></li>
+            <li>📍 38 Wessel Road, Sandton</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Hours</h4>
+          <ul class="footer-list">
+            <li>Mon–Sat: 9:00 AM – 5:00 PM</li>
+            <li>Sun: Closed</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 Legacy Barber. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
