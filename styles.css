@@ -597,6 +597,136 @@ a { color: inherit; text-decoration: none; }
 }
 .empty-state p { color: var(--muted); margin-bottom: 18px; }
 
+/* ===== Meet the Barber Section ===== */
+.barber-section {
+  padding: 60px 20px;
+  margin: 20px auto 40px;
+}
+
+.barber-card {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 28px 20px;
+  box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+@media (min-width: 720px) {
+  .barber-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 40px 36px;
+    gap: 48px;
+  }
+}
+
+.barber-image-wrap {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+@media (min-width: 720px) {
+  .barber-image-wrap {
+    width: 260px;
+    margin: 0;
+  }
+}
+
+.barber-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 22px;
+  border: 2px solid var(--border);
+  display: block;
+  background: var(--surface);
+}
+
+.barber-info {
+  text-align: center;
+}
+
+@media (min-width: 720px) {
+  .barber-info {
+    text-align: left;
+    flex: 1;
+  }
+}
+
+.barber-eyebrow {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  color: var(--blue-bright);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.barber-name {
+  font-family: var(--font-primary);
+  font-size: clamp(36px, 8vw, 48px);
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.barber-role {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+.barber-bio {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  max-width: 480px;
+}
+
+.barber-bio strong {
+  color: var(--blue-bright);
+  font-weight: 600;
+}
+
+.barber-location {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.barber-cta {
+  margin-top: 0;
+  display: inline-block;
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .barber-section {
+    padding: 40px 16px;
+  }
+  
+  .barber-card {
+    padding: 24px 16px;
+  }
+  
+  .barber-image-wrap {
+    max-width: 220px;
+  }
+  
+  .barber-name {
+    font-size: 32px;
+  }
+}
+
 /* ===== Modal ===== */
 .modal-overlay {
   position: fixed;
