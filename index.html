@@ -3,24 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-  <title>Legacy Barber Shop — Reserve Your Cut</title>
+  <title>De Legacy Barber Shop — Reserve Your Cut</title>
   <meta name="description" content="Fresh fades, tapers, buzz cuts & afro trims. Book a house call or shop visit. Mobile-friendly booking system." />
+
+  <script src="db-config.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="hero.jpeg" />
   <link rel="shortcut icon" href="hero.jpeg">
+  <style>
+    .hero-title {
+      font-family: var(--font-primary);
+      font-size: clamp(52px, 14vw, 110px);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      margin-top: 12px;
+      max-width: 800px;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-title span:nth-child(1) {
+      font-size: 0.6em;
+      letter-spacing: 0.3em;
+      color: var(--blue-bright);
+      margin-bottom: -0.1em;
+    }
+
+    .hero-title span:nth-child(2) {
+      font-size: 1.2em;
+      letter-spacing: 0.05em;
+      color: var(--text-primary);
+    }
+
+    .hero-title span:nth-child(3) {
+      font-size: 0.7em;
+      letter-spacing: 0.15em;
+      color: var(--text-secondary);
+      margin-top: -0.05em;
+    }
+
+    .hero-title span:nth-child(4) {
+      font-size: 0.7em;
+      letter-spacing: 0.15em;
+      color: var(--text-secondary);
+    }
+  </style>
 </head>
 <body>
   <header class="hero">
-    <img class="hero-bg" src="secondary-logo.png" alt="" />
+    <img class="hero-bg" src="name.jpeg" alt="" />
     <div class="hero-overlay"></div>
 
     <nav class="nav container">
       <a href="index.html" class="logo-link">
-        <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
-        <div class="logo-primary">Legacy</div>
+        <img src="hero.jpeg" alt="De Legacy Barber Shop" class="logo-icon" />
+        <div class="logo-primary">De Legacy</div>
       </a>
 
       <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -38,7 +85,11 @@
 
     <div class="hero-content container">
       <p class="eyebrow">EST. SHARP CUTS</p>
-      <h1 class="hero-title">Legacy Barber</h1>
+      <h1 class="hero-title">
+        <span>DE</span>
+        <span>LEGACY</span>
+        
+      </h1>
       <p class="hero-sub">Precision fades, classic tapers, and sharp lineups. Book a house call or visit the chair — your next clean cut is a few taps away.</p>
       <a class="btn-gold" href="booking.html">Reserve Your Chair</a>
     </div>
@@ -62,54 +113,48 @@
     </div>
   </section>
 
-  <!-- ===== MEET THE BARBER ===== -->
   <section class="barber-section container">
     <div class="barber-card">
       <div class="barber-image-wrap">
-        <img src="barber face.jpg" alt="Legacy Barber" class="barber-photo" />
+        <img src="barber face.jpg" alt="De Legacy Barber" class="barber-photo" />
       </div>
       <div class="barber-info">
         <p class="barber-eyebrow">Meet the Barber</p>
         <h2 class="barber-name">Retha Ncobethi</h2>
         <p class="barber-role">Founder & Master Barber</p>
         <p class="barber-bio">
-          With over 15 years of barbering experience, Retha Ncobethi has built a reputation for delivering quality, precision, and consistency. His approach is simple:<strong> "Keeping it local, but tight."</strong> Whether it's a classic cut or the latest trend, every client receives professional service and attention to detail. He values the youth and believes they are his priority when it comes to clients   
+          With over 15 years of barbering experience, Retha Ncobethi has built a reputation for delivering quality, precision, and consistency. His approach is simple: <strong>"Keeping it local, but tight."</strong> Whether it's a classic cut or the latest trend, every client receives professional service and attention to detail. He values the youth and believes they are his priority when it comes to clients.
         </p>
-      
       </div>
     </div>
   </section>
 
-  <!-- Location Teaser -->
-<section class="location-teaser container">
-  <h2>Our Location</h2>
-
-  <div class="map-container">
-    <iframe
-      src="https://www.google.com/maps?q=Olievenhoutbosch%20Ext%2015,%20Centurion,%20South%20Africa&output=embed"
-      width="100%"
-      height="300"
-      style="border:0; border-radius:22px;"
-      loading="lazy"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <p>
-    📍 Centurion, Olievenhoutbosch, Ext 15<br />
-    House calls available across Centurion.
-  </p>
-
-  <div style="text-align:center; margin-top:24px;">
-    <a href="booking.html" class="btn-gold">Book Now</a>
-  </div>
-</section>
+  <section class="location-teaser container">
+    <h2>Our Location</h2>
+    <div class="map-container">
+      <iframe
+        src="https://www.google.com/maps?q=Olievenhoutbosch%20Ext%2015,%20Centurion,%20South%20Africa&output=embed"
+        width="100%"
+        height="300"
+        style="border:0; border-radius:22px;"
+        loading="lazy"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <p>
+      📍 Centurion, Olievenhoutbosch, Ext 15<br />
+      House calls available across Centurion.
+    </p>
+    <div style="text-align:center; margin-top:24px;">
+      <a href="booking.html" class="btn-gold">Book Now</a>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <div class="logo-secondary">Legacy</div>
+          <div class="logo-secondary">De Legacy</div>
           <p class="footer-tag">Walk in a king, walk out sharper.</p>
         </div>
         <div class="footer-col">
@@ -118,6 +163,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="booking.html">Book Now</a></li>
             <li><a href="my-bookings.html">Bookings</a></li>
+            <li><a href="admin.html" style="color: var(--blue-bright); font-weight: 600;">🔐 Admin</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -136,7 +182,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        © 2026 Legacy Barber. All rights reserved.
+        © 2026 De Legacy Barber. All rights reserved.
       </div>
     </div>
   </footer>
