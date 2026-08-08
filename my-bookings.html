@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-  <title>De Legacy Barber — Bookings</title>
+  <title>De Legacy — Bookings</title>
   <meta name="description" content="View, reschedule or cancel your barber appointments saved on this device." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,7 +20,7 @@
 <body>
   <nav class="nav container">
     <a href="index.html" class="logo-link">
-      <img src="hero.jpeg" alt="De Legacy Barber Shop" class="logo-icon" />
+      <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
       <div class="logo-primary">De Legacy</div>
     </a>
 
@@ -50,6 +50,7 @@
     </div>
   </section>
 
+  <!-- Reschedule Modal -->
   <div id="rescheduleModal" class="modal-overlay" style="display:none;">
     <div class="modal-card card">
       <h3 class="modal-title">Reschedule Booking</h3>
@@ -100,11 +101,12 @@
         </div>
       </div>
       <div class="footer-bottom">
-        © 2026 De Legacy Barber. All rights reserved.
+        © 2026 De Legacy. All rights reserved.
       </div>
     </div>
   </footer>
 
+  <!-- ⚠️ IMPORTANT: DO NOT import script.js here — it conflicts with Firestore. -->
   <script src="my-bookings.js"></script>
 </body>
 </html>
