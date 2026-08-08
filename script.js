@@ -12,67 +12,53 @@ const postalCodeInput = document.getElementById("postalCode");
 
 const WHATSAPP_NUMBER = "27673666047";
 
+// --- HELPER: Get unique device ID ---
+function getDeviceId() {
+  let deviceId = localStorage.getItem("legacy_device_id");
+  if (!deviceId) {
+    deviceId = "device_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+    localStorage.setItem("legacy_device_id", deviceId);
+  }
+  return deviceId;
+}
+
 // State
 let selectedCut = "";
 let selectedType = "";
 let selectedSlot = null;
 let currentStep = 1;
 
-// Storage functions
-function getBookings() {
+// --- FIRESTORE FUNCTIONS (use global `db` from db-config.js) ---
+async function getBookedSlots(date) {
   try {
-    return JSON.parse(localStorage.getItem("barberBookings") || "{}");
-  } catch {
-    return {};
+    const snapshot = await db.collection("bookings")
+      .where("date", "==", date)
+      .get();
+    return snapshot.docs.map(doc => doc.data().time);
+  } catch (error) {
+    console.error("Error fetching slots:", error);
+    return [];
   }
 }
 
-function saveBookings(data) {
-  localStorage.setItem("barberBookings", JSON.stringify(data));
-}
-
-// Track this device's own bookings (for My Bookings page)
-function addToMyBookings(entry) {
+async function createBooking(bookingData) {
   try {
-    const list = JSON.parse(localStorage.getItem("myBarberBookings") || "[]");
-    list.push(entry);
-    localStorage.setItem("myBarberBookings", JSON.stringify(list));
-  } catch {
-    localStorage.setItem("myBarberBookings", JSON.stringify([entry]));
+    bookingData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    // Ensure deviceId is included
+    bookingData.deviceId = getDeviceId();
+    await db.collection("bookings").add(bookingData);
+    return true;
+  } catch (error) {
+    console.error("Error saving booking:", error);
+    return false;
   }
 }
 
-function getFullAddress() {
-  const street = streetAddressInput?.value.trim() || "";
-  const city = citySuburbInput?.value.trim() || "";
-  const postal = postalCodeInput?.value.trim() || "";
-  return [street, city, postal].filter(p => p !== "").join(", ") || "Not provided";
-}
-
-function sendWhatsAppMessage(bookingDetails) {
-  let addressLine = "";
-  if (bookingDetails.type === "House Call" && bookingDetails.address && bookingDetails.address !== "Not provided") {
-    addressLine = `%0A📍 *Address:* ${encodeURIComponent(bookingDetails.address)}`;
-  }
-  
-  const message = `*LEGACY BARBER - NEW BOOKING* %0A%0A` +
-    ` *Client:* ${encodeURIComponent(bookingDetails.name)}%0A` +
-    ` *Date:* ${bookingDetails.date}%0A` +
-    ` *Time:* ${bookingDetails.time}%0A` +
-    ` *Cut:* ${bookingDetails.cut}%0A` +
-    ` *Type:* ${bookingDetails.type}${addressLine}%0A` +
-    ` *Contact:* ${bookingDetails.phone || "Not provided"}%0A%0A` +
-    `*Walk in a king, walk out sharper!* `;
-  
-  const barberWhatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
-  window.open(barberWhatsappUrl, "_blank");
-}
-
-// Update available slots based on selected date
-function updateAvailableSlots() {
+// --- UI LOGIC ---
+async function updateAvailableSlots() {
   const date = dateInput.value;
   const allSlots = document.querySelectorAll("#slots .slot");
-  
+
   if (!date) {
     allSlots.forEach(slot => {
       slot.style.display = "";
@@ -81,10 +67,9 @@ function updateAvailableSlots() {
     selectedSlot = null;
     return;
   }
-  
-  const bookings = getBookings();
-  const takenSlots = (bookings[date] || []).map(b => b.time);
-  
+
+  const takenSlots = await getBookedSlots(date);
+
   allSlots.forEach(slot => {
     const time = slot.getAttribute("data-time");
     if (takenSlots.includes(time)) {
@@ -97,7 +82,7 @@ function updateAvailableSlots() {
       slot.style.display = "";
     }
   });
-  
+
   renderSlotSelection();
 }
 
@@ -113,53 +98,45 @@ function renderSlotSelection() {
   });
 }
 
-// Update booking summary
 function updateBookingSummary() {
   const date = dateInput.value;
   const name = nameInput.value.trim();
   const summaryEl = document.getElementById("summaryDetails");
-  
   if (!summaryEl) return;
-  
+
   const items = [];
-  if (date) items.push({ label: "Date", value: new Date(date + "T00:00:00").toLocaleDateString(undefined, {
-    weekday: "short", year: "numeric", month: "short", day: "numeric"
-  })});
+  if (date) items.push({ label: "Date", value: new Date(date + "T00:00:00").toLocaleDateString(undefined, { weekday: "short", year: "numeric", month: "short", day: "numeric" })});
   if (selectedCut) items.push({ label: "Cut", value: selectedCut });
   if (selectedSlot) items.push({ label: "Time", value: selectedSlot });
   if (selectedType) items.push({ label: "Type", value: selectedType });
   if (name) items.push({ label: "Name", value: name });
-  
+
   summaryEl.innerHTML = items.map(item => `
     <div class="booking-summary-item">
       <span class="label">${item.label}</span>
       <span class="value">${item.value}</span>
     </div>
   `).join("");
-  
+
   if (items.length === 0) {
     summaryEl.innerHTML = '<p style="color: var(--muted); font-size: 14px;">Complete the steps above to see your summary.</p>';
   }
 }
 
-// Step navigation
 function goToStep(step) {
   currentStep = step;
   document.querySelectorAll(".form-step").forEach(el => {
     el.style.display = el.getAttribute("data-step") == step ? "block" : "none";
   });
-  
   document.querySelectorAll(".progress-step").forEach(el => {
     const stepNum = parseInt(el.getAttribute("data-step"));
     el.classList.remove("active", "completed");
     if (stepNum === step) el.classList.add("active");
     else if (stepNum < step) el.classList.add("completed");
   });
-  
   updateBookingSummary();
 }
 
-// Handle cut selection
 function initCutSelection() {
   const cutOptions = document.querySelectorAll("#cuts .option");
   cutOptions.forEach(option => {
@@ -173,7 +150,6 @@ function initCutSelection() {
   });
 }
 
-// Handle type selection with address + maps toggle
 function initTypeSelection() {
   const typeOptions = document.querySelectorAll("#types .option");
   const shopMap = document.getElementById("shopMapSection");
@@ -185,7 +161,7 @@ function initTypeSelection() {
       option.classList.add("active");
       selectedType = option.getAttribute("data-type");
       errorEl.textContent = "";
-      
+
       if (selectedType === "House Call") {
         addressSection.style.display = "block";
         if (shopMap) shopMap.style.display = "none";
@@ -194,37 +170,36 @@ function initTypeSelection() {
         addressSection.style.display = "none";
         if (shopMap) shopMap.style.display = "block";
         if (houseMap) houseMap.style.display = "none";
-        
-        if (streetAddressInput) streetAddressInput.value = "";
-        if (citySuburbInput) citySuburbInput.value = "";
-        if (postalCodeInput) postalCodeInput.value = "";
+        if (streetAddressInput) {
+          streetAddressInput.value = "";
+          citySuburbInput.value = "";
+          postalCodeInput.value = "";
+        }
       }
       updateBookingSummary();
     });
   });
 }
 
-// Handle slot selection
 function attachSlotEvents() {
   const slots = document.querySelectorAll("#slots .slot");
   slots.forEach(slot => {
     slot.removeEventListener("click", slot._listener);
-    const handler = () => {
+    const handler = async () => {
       const date = dateInput.value;
       if (!date) {
         errorEl.textContent = "Please pick a date first.";
         return;
       }
-      
+
       const time = slot.getAttribute("data-time");
-      const bookings = getBookings();
-      const takenSlots = (bookings[date] || []).map(b => b.time);
-      
+      const takenSlots = await getBookedSlots(date);
+
       if (takenSlots.includes(time)) {
         errorEl.textContent = "This time slot is already booked.";
         return;
       }
-      
+
       if (selectedSlot === time) {
         selectedSlot = null;
         slot.classList.remove("selected");
@@ -241,58 +216,60 @@ function attachSlotEvents() {
   });
 }
 
-// Validate address for house call
 function validateHouseCallAddress() {
   if (selectedType !== "House Call") return true;
-  
   const street = streetAddressInput?.value.trim();
   const city = citySuburbInput?.value.trim();
-  
-  if (!street) {
-    errorEl.textContent = "Please provide your street address for the house call.";
-    return false;
-  }
-  if (!city) {
-    errorEl.textContent = "Please provide your city or suburb for the house call.";
-    return false;
-  }
+  if (!street) { errorEl.textContent = "Please provide your street address for the house call."; return false; }
+  if (!city) { errorEl.textContent = "Please provide your city or suburb for the house call."; return false; }
   return true;
 }
 
-// Reset form state
 function resetFormState() {
   selectedCut = "";
   selectedType = "";
   selectedSlot = null;
-  
   document.querySelectorAll("#cuts .option").forEach(opt => opt.classList.remove("active"));
   document.querySelectorAll("#types .option").forEach(opt => opt.classList.remove("active"));
   document.querySelectorAll("#slots .slot").forEach(slot => slot.classList.remove("selected"));
-  
   addressSection.style.display = "none";
   const shopMap = document.getElementById("shopMapSection");
   const houseMap = document.getElementById("houseCallMapSection");
   if (shopMap) shopMap.style.display = "none";
   if (houseMap) houseMap.style.display = "none";
-  
   if (streetAddressInput) {
     streetAddressInput.value = "";
     citySuburbInput.value = "";
     postalCodeInput.value = "";
   }
-  
   dateInput.value = "";
   nameInput.value = "";
   phoneInput.value = "";
-  
   goToStep(1);
   updateAvailableSlots();
   attachSlotEvents();
 }
 
-// Form submission
+function sendWhatsAppMessage(bookingDetails) {
+  let addressLine = "";
+  if (bookingDetails.type === "House Call" && bookingDetails.address && bookingDetails.address !== "Not provided") {
+    addressLine = `%0A📍 *Address:* ${encodeURIComponent(bookingDetails.address)}`;
+  }
+  const message = `*DE LEGACY  - NEW BOOKING* %0A%0A` +
+    ` *Client:* ${encodeURIComponent(bookingDetails.name)}%0A` +
+    ` *Date:* ${bookingDetails.date}%0A` +
+    ` *Time:* ${bookingDetails.time}%0A` +
+    ` *Cut:* ${bookingDetails.cut}%0A` +
+    ` *Type:* ${bookingDetails.type}${addressLine}%0A` +
+    ` *Contact:* ${bookingDetails.phone || "Not provided"}%0A%0A` +
+    `*Walk in a king, walk out sharper!* `;
+  const barberWhatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+  window.open(barberWhatsappUrl, "_blank");
+}
+
+// --- FORM SUBMISSION ---
 if (form) {
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     errorEl.textContent = "";
     messageEl.innerHTML = "";
@@ -308,8 +285,8 @@ if (form) {
     if (!name) { errorEl.textContent = "Please enter your name."; return; }
     if (!validateHouseCallAddress()) return;
 
-    const bookings = getBookings();
-    const takenSlots = (bookings[date] || []).map(b => b.time);
+    // Last-minute availability check
+    const takenSlots = await getBookedSlots(date);
     if (takenSlots.includes(selectedSlot)) {
       errorEl.textContent = "Sorry, this time slot was just taken. Please pick another.";
       updateAvailableSlots();
@@ -319,25 +296,13 @@ if (form) {
 
     let addressString = "";
     if (selectedType === "House Call") {
-      addressString = getFullAddress();
+      addressString = [streetAddressInput?.value.trim(), citySuburbInput?.value.trim(), postalCodeInput?.value.trim()]
+        .filter(p => p !== "").join(", ") || "Not provided";
     }
 
-    const bookingId = "bk_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
-
-    if (!bookings[date]) bookings[date] = [];
-    bookings[date].push({
-      id: bookingId,
-      name: name,
-      time: selectedSlot,
-      cut: selectedCut,
-      type: selectedType,
-      phone: phoneRaw || "Not provided",
-      address: addressString || "Shop Visit - no address"
-    });
-    saveBookings(bookings);
-
-    addToMyBookings({
-      id: bookingId,
+    const bookingData = {
+      id: "bk_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
+      deviceId: getDeviceId(), // ✅ CRITICAL: stored to allow user to see their own bookings
       date: date,
       name: name,
       time: selectedSlot,
@@ -345,35 +310,32 @@ if (form) {
       type: selectedType,
       phone: phoneRaw || "Not provided",
       address: addressString || "Shop Visit - no address",
-      createdAt: Date.now()
-    });
-
-    const bookingDetails = {
-      name, date, time: selectedSlot, cut: selectedCut, type: selectedType,
-      phone: phoneRaw || "Not provided",
-      address: addressString || "Shop Visit - no address"
+      status: "confirmed"
     };
 
-    sendWhatsAppMessage(bookingDetails);
+    const success = await createBooking(bookingData);
 
-    let successMsg = `✓ Booked, ${name}! ${selectedCut} at ${selectedSlot} on ${new Date(date + "T00:00:00").toLocaleDateString(undefined, {
-      weekday: "short", year: "numeric", month: "short", day: "numeric"
-    })}.`;
-    if (selectedType === "House Call" && addressString && addressString !== "Not provided") {
-      successMsg += `<br>📍 House call address: ${addressString}`;
+    if (success) {
+      sendWhatsAppMessage(bookingData);
+
+      let successMsg = `✓ Booked, ${name}! ${selectedCut} at ${selectedSlot} on ${new Date(date + "T00:00:00").toLocaleDateString(undefined, {
+        weekday: "short", year: "numeric", month: "short", day: "numeric"
+      })}.`;
+      if (selectedType === "House Call" && addressString && addressString !== "Not provided") {
+        successMsg += `<br>📍 House call address: ${addressString}`;
+      }
+      successMsg += `<br>📱 WhatsApp notification sent to barber. We'll confirm shortly.<br><br><a href="my-bookings.html" style="color: var(--gold);">View My Bookings →</a>`;
+      messageEl.innerHTML = successMsg;
+      resetFormState();
+    } else {
+      errorEl.textContent = "Oops! Something went wrong connecting to the server. Try again.";
     }
-    successMsg += `<br>📱 WhatsApp notification sent to barber. We'll confirm shortly.<br><br><a href="my-bookings.html" style="color: var(--gold);">View My Bookings →</a>`;
-    messageEl.innerHTML = successMsg;
-
-    resetFormState();
   });
 
-  // Step navigation buttons
+  // Navigation Buttons
   document.querySelectorAll(".step-next").forEach(btn => {
     btn.addEventListener("click", () => {
       const next = parseInt(btn.getAttribute("data-next"));
-      
-      // Validate current step
       if (next === 2) {
         const date = dateInput.value;
         if (!date) { errorEl.textContent = "Please pick a date."; return; }
@@ -387,7 +349,6 @@ if (form) {
         if (!selectedType) { errorEl.textContent = "Please choose an appointment type."; return; }
         if (selectedType === "House Call" && !validateHouseCallAddress()) return;
       }
-      
       errorEl.textContent = "";
       goToStep(next);
     });
@@ -400,7 +361,6 @@ if (form) {
     });
   });
 
-  // Date change
   dateInput.addEventListener("change", () => {
     selectedSlot = null;
     updateAvailableSlots();
@@ -409,7 +369,6 @@ if (form) {
     updateBookingSummary();
   });
 
-  // Name input change for summary
   nameInput.addEventListener("input", updateBookingSummary);
   phoneInput.addEventListener("input", updateBookingSummary);
 
@@ -427,17 +386,14 @@ if (form) {
   init();
 }
 
-// ===== Hamburger menu =====
+// Hamburger Menu
 const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("navLinks");
-
 if (hamburger && navLinks) {
   hamburger.addEventListener("click", () => {
     hamburger.classList.toggle("active");
     navLinks.classList.toggle("open");
   });
-
-  // Close menu when a link is clicked
   navLinks.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
       hamburger.classList.remove("active");
