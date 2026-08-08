@@ -35,7 +35,7 @@
 <body>
   <nav class="nav container">
     <a href="index.html" class="logo-link">
-      <img src="hero.jpeg" alt="De Legacy Barber Shop" class="logo-icon" />
+      <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
       <div class="logo-primary">De Legacy</div>
     </a>
     <div class="nav-links">
@@ -64,7 +64,7 @@
 
   <footer class="site-footer" style="margin-top: 40px;">
     <div class="container">
-      <div class="footer-bottom">© 2026 De Legacy Barber. Admin Dashboard.</div>
+      <div class="footer-bottom">© 2026 De Legacy . Admin Dashboard.</div>
     </div>
   </footer>
 
@@ -108,7 +108,7 @@
         let count = 0;
         snapshot.forEach(doc => {
           const b = doc.data();
-          const docId = doc.id;
+          const docId = doc.id; // THIS IS THE DOCUMENT ID
           let dateStr = b.date;
           try {
             dateStr = new Date(b.date + "T00:00:00").toLocaleDateString(undefined, {
@@ -134,13 +134,14 @@
 
         container.innerHTML = html;
 
+        // ADD DELETE EVENT LISTENERS
         container.querySelectorAll(".delete-btn").forEach(btn => {
           btn.addEventListener("click", async () => {
             const docId = btn.getAttribute("data-docid");
             if (confirm("Are you sure you want to delete this appointment?")) {
               try {
                 await db.collection("bookings").doc(docId).delete();
-                loadAppointments();
+                loadAppointments(); // Reload the table
               } catch (error) {
                 console.error("Error deleting:", error);
                 alert("Failed to delete. Check console.");
@@ -162,7 +163,7 @@
       const element = document.getElementById("appointmentsContainer");
       const opt = {
         margin: [10, 10, 10, 10],
-        filename: `De_Legacy_Appointments_${new Date().toISOString().split('T')[0]}.pdf`,
+        filename: `Legacy_Appointments_${new Date().toISOString().split('T')[0]}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, letterRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
