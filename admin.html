@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Legacy Barber — Admin Dashboard</title>
+  <title>De Legacy Barber — Admin Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -35,8 +35,8 @@
 <body>
   <nav class="nav container">
     <a href="index.html" class="logo-link">
-      <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
-      <div class="logo-primary">Legacy</div>
+      <img src="hero.jpeg" alt="De Legacy Barber Shop" class="logo-icon" />
+      <div class="logo-primary">De Legacy</div>
     </a>
     <div class="nav-links">
       <a class="nav-btn ghost" href="index.html">← HOME</a>
@@ -64,7 +64,7 @@
 
   <footer class="site-footer" style="margin-top: 40px;">
     <div class="container">
-      <div class="footer-bottom">© 2026 Legacy Barber. Admin Dashboard.</div>
+      <div class="footer-bottom">© 2026 De Legacy Barber. Admin Dashboard.</div>
     </div>
   </footer>
 
@@ -108,7 +108,7 @@
         let count = 0;
         snapshot.forEach(doc => {
           const b = doc.data();
-          const docId = doc.id; // THIS IS THE DOCUMENT ID
+          const docId = doc.id;
           let dateStr = b.date;
           try {
             dateStr = new Date(b.date + "T00:00:00").toLocaleDateString(undefined, {
@@ -134,14 +134,13 @@
 
         container.innerHTML = html;
 
-        // ADD DELETE EVENT LISTENERS
         container.querySelectorAll(".delete-btn").forEach(btn => {
           btn.addEventListener("click", async () => {
             const docId = btn.getAttribute("data-docid");
             if (confirm("Are you sure you want to delete this appointment?")) {
               try {
                 await db.collection("bookings").doc(docId).delete();
-                loadAppointments(); // Reload the table
+                loadAppointments();
               } catch (error) {
                 console.error("Error deleting:", error);
                 alert("Failed to delete. Check console.");
@@ -163,7 +162,7 @@
       const element = document.getElementById("appointmentsContainer");
       const opt = {
         margin: [10, 10, 10, 10],
-        filename: `Legacy_Appointments_${new Date().toISOString().split('T')[0]}.pdf`,
+        filename: `De_Legacy_Appointments_${new Date().toISOString().split('T')[0]}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, letterRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
