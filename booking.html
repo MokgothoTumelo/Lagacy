@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-  <title>Legacy Barber — Book Your Appointment</title>
+  <title>De Legacy Barber — Book Your Appointment</title>
   <meta name="description" content="Book your haircut appointment — choose date, cut, time slot, and appointment type." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,26 +11,30 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="hero.jpeg" />
   <link rel="shortcut icon" href="hero.jpeg">
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="db-config.js"></script>
 </head>
 <body>
   <nav class="nav container">
-  <a href="index.html" class="logo-link">
-    <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
-    <div class="logo-primary">Legacy</div>
-  </a>
+    <a href="index.html" class="logo-link">
+      <img src="hero.jpeg" alt="De Legacy Barber Shop" class="logo-icon" />
+      <div class="logo-primary">De Legacy</div>
+    </a>
 
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <div class="nav-links" id="navLinks">
-    <a class="nav-btn ghost" href="my-bookings.html">BOOKINGS</a>
-    <a class="nav-btn ghost" href="gallery.html">GALLERY</a>
-    <a class="nav-btn" href="index.html">← HOME</a>
-  </div>
-</nav>
+    <div class="nav-links" id="navLinks">
+      <a class="nav-btn ghost" href="my-bookings.html">BOOKINGS</a>
+      <a class="nav-btn ghost" href="gallery.html">GALLERY</a>
+      <a class="nav-btn" href="index.html">← HOME</a>
+    </div>
+  </nav>
 
   <section class="book-section container">
     <div class="book-head">
@@ -39,7 +43,6 @@
     </div>
 
     <form id="bookingForm" class="card">
-      <!-- Progress Bar -->
       <div class="progress-steps">
         <div class="progress-step active" data-step="1">
           <span class="step-number">1</span>
@@ -55,7 +58,6 @@
         </div>
       </div>
 
-      <!-- Step 1: Date & Cut -->
       <div class="form-step" data-step="1">
         <label class="field-label">Select Date</label>
         <input type="date" id="date" class="text-input" required />
@@ -78,39 +80,36 @@
             <div class="opt-title">Afro Trim</div>
             <div class="opt-desc">Shaped & defined</div>
           </div>
-          <div class="option" data-cut="Afro Trim">
+          <div class="option" data-cut="Dreadlocks">
             <div class="opt-title">Dreadlocks</div>
             <div class="opt-desc">Shaped & defined</div>
           </div>
-          <div class="option" data-cut="Afro Trim">
+          <div class="option" data-cut="Braids">
             <div class="opt-title">Braids</div>
             <div class="opt-desc">Shaped & defined</div>
           </div>
-          <div class="option" data-cut="Afro Trim">
+          <div class="option" data-cut="Mohawk">
             <div class="opt-title">Mohawk</div>
             <div class="opt-desc">Shaped & defined</div>
           </div>
         </div>
-        
+
         <button type="button" class="step-next" data-next="2">Next →</button>
       </div>
 
-      <!-- Step 2: Time & Type -->
       <div class="form-step" data-step="2" style="display:none;">
         <label class="field-label">Available Time Slots</label>
         <div id="slots" class="slots">
           <div class="slot" data-time="09:00">09:00</div>
           <div class="slot" data-time="09:45">09:45</div>
-
-          <div class="slot" data-time="10:00">10:30</div>
-          <div class="slot" data-time="11:00">11:15</div>
+          <div class="slot" data-time="10:30">10:30</div>
+          <div class="slot" data-time="11:15">11:15</div>
           <div class="slot" data-time="12:00">12:00</div>
-          <div class="slot" data-time="13:00">12:45</div>
-          <div class="slot" data-time="14:00">13:30</div>
-          <div class="slot" data-time="15:00">14:15</div>
-          <div class="slot" data-time="16:00">15:00</div>
-          <div class="slot" data-time="16:00">16:45</div>
-          
+          <div class="slot" data-time="12:45">12:45</div>
+          <div class="slot" data-time="13:30">13:30</div>
+          <div class="slot" data-time="14:15">14:15</div>
+          <div class="slot" data-time="15:00">15:00</div>
+          <div class="slot" data-time="16:45">16:45</div>
         </div>
 
         <label class="field-label">Appointment Type</label>
@@ -125,27 +124,25 @@
           </div>
         </div>
 
-        <!-- Shop Location Map -->
         <div id="shopMapSection" style="display: none; margin-top: 24px;">
           <label class="field-label">Shop Location</label>
           <div class="map-container">
-            <iframe 
-             src="https://www.google.com/maps?q=Olievenhoutbosch%20Ext%2015,%20Centurion,%20South%20Africa&output=embed"
+            <iframe
+              src="https://www.google.com/maps?q=Olievenhoutbosch%20Ext%2015,%20Centurion,%20South%20Africa&output=embed"
               width="100%" height="320" style="border:0; border-radius: 22px;" allowfullscreen="" loading="lazy">
             </iframe>
           </div>
           <p class="field-hint">
-            📍 Centurion, Olievenhoutbosch, Ext 15 • 
+            📍 Centurion, Olievenhoutbosch, Ext 15 •
             <strong>Open Mon–Sat 9:00 AM – 5:00 PM</strong>
           </p>
         </div>
 
-        <!-- House Call Service Area Map -->
         <div id="houseCallMapSection" style="display: none; margin-top: 24px;">
           <label class="field-label">Service Area — House Calls</label>
           <div class="map-container">
-            <iframe 
-             src="https://www.google.com/maps?q=Olievenhoutbosch%20Ext%2015,%20Centurion,%20South%20Africa&output=embed"
+            <iframe
+              src="https://www.google.com/maps?q=Olievenhoutbosch%20Ext%2015,%20Centurion,%20South%20Africa&output=embed"
               width="100%" height="340" style="border:0; border-radius: 22px;" allowfullscreen="" loading="lazy">
             </iframe>
           </div>
@@ -170,7 +167,6 @@
         </div>
       </div>
 
-      <!-- Step 3: Your Details -->
       <div class="form-step" data-step="3" style="display:none;">
         <label class="field-label">Your Name</label>
         <input type="text" id="clientName" class="text-input" placeholder="Name Surname" required />
@@ -179,7 +175,6 @@
         <input type="tel" id="clientPhone" class="text-input" placeholder="0612345678" required/>
         <p class="field-hint">We'll send a WhatsApp confirmation if provided</p>
 
-        <!-- Booking Summary -->
         <div class="booking-summary" id="bookingSummary">
           <h4>Booking Summary</h4>
           <div id="summaryDetails"></div>
@@ -200,7 +195,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <div class="logo-secondary">Legacy</div>
+          <div class="logo-secondary">De Legacy</div>
           <p class="footer-tag">Walk in a king, walk out sharper.</p>
         </div>
         <div class="footer-col">
@@ -227,7 +222,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        © 2026 Legacy Barber. All rights reserved.
+        © 2026 De Legacy Barber. All rights reserved.
       </div>
     </div>
   </footer>
