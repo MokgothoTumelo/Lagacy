@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-  <title>Legacy Barber — Gallery</title>
-  <meta name="description" content="See our work — fades, tapers, buzz cuts, afro trims and more from Legacy Barber Shop." />
+  <title>De Legacy Barber — Gallery</title>
+  <meta name="description" content="See our work — fades, tapers, buzz cuts, afro trims and more from De Legacy Barber Shop." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,113 +12,114 @@
   <link rel="icon" type="image/png" href="hero.jpeg" />
   <link rel="shortcut icon" href="hero.jpeg">
   <style>
-    /* Gallery-specific styles (keeps everything else from styles.css) */
-.gallery-section {
-  padding: 20px 20px 80px 20px;
-}
+    .gallery-section {
+      padding: 20px 20px 80px 20px;
+    }
 
-.gallery-head {
-  text-align: center;
-  margin-bottom: 36px;
-}
+    .gallery-head {
+      text-align: center;
+      margin-bottom: 36px;
+    }
 
-.gallery-head h2 {
-  font-family: var(--font-primary);
-  font-size: 44px;
-  letter-spacing: 0.03em;
-  color: var(--blue-bright);
-}
+    .gallery-head h2 {
+      font-family: var(--font-primary);
+      font-size: 44px;
+      letter-spacing: 0.03em;
+      color: var(--blue-bright);
+    }
 
-.gallery-head p {
-  color: var(--text-secondary);
-  font-size: 15px;
-  margin-top: 8px;
-}
+    .gallery-head p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-top: 8px;
+    }
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;   /* 2 columns on phone */
-  gap: 12px;
-}
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-@media (min-width: 540px) {
-  .gallery-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-}
+    @media (min-width: 540px) {
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
 
-@media (min-width: 900px) {
-  .gallery-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
+    @media (min-width: 900px) {
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
 
-.gallery-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  overflow: hidden;
-  transition: transform 0.2s, border-color 0.2s;
-}
+    .gallery-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
 
-.gallery-card:hover {
-  border-color: var(--blue-bright);
-  transform: translateY(-4px);
-}
+    .gallery-card:hover {
+      border-color: var(--blue-bright);
+      transform: translateY(-4px);
+    }
 
-.gallery-img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-  background: var(--surface);
-}
+    .gallery-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: var(--surface);
+    }
 
-.gallery-placeholder {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(145deg, #1A1F26, #14171C);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 14px;
-  border-bottom: 1px solid var(--border);
-}
+    .gallery-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: linear-gradient(145deg, #1A1F26, #14171C);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.gallery-placeholder span {
-  font-family: var(--font-primary);
-  font-size: 28px;
-  color: var(--blue-bright);
-  letter-spacing: 0.05em;
-}
+    .gallery-placeholder span {
+      font-family: var(--font-primary);
+      font-size: 28px;
+      color: var(--blue-bright);
+      letter-spacing: 0.05em;
+    }
 
-.gallery-info {
-  padding: 16px 18px 20px;
-}
+    .gallery-info {
+      padding: 16px 18px 20px;
+    }
 
-.gallery-info h3 {
-  font-family: var(--font-primary);
-  font-size: 22px;
-  color: var(--blue-bright);
-  letter-spacing: 0.03em;
-}
+    .gallery-info h3 {
+      font-family: var(--font-primary);
+      font-size: 22px;
+      color: var(--blue-bright);
+      letter-spacing: 0.03em;
+    }
 
-.gallery-info p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 4px;
-}
+    .gallery-info p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
   </style>
+
+  <script src="db-config.js"></script>
 </head>
 <body>
   <nav class="nav container">
     <a href="index.html" class="logo-link">
-      <img src="hero.jpeg" alt="Legacy Barber Shop" class="logo-icon" />
-      <div class="logo-primary">Legacy</div>
+      <img src="hero.jpeg" alt="De Legacy Barber Shop" class="logo-icon" />
+      <div class="logo-primary">De Legacy</div>
     </a>
 
     <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -141,8 +142,6 @@
     </div>
 
     <div class="gallery-grid">
-      <!-- Replace the placeholder divs with real <img class="gallery-img" src="your-photo.jpg" alt="..."> when you have photos -->
-
       <article class="gallery-card">
         <div class="gallery-placeholder">
           <span>Fade</span>
@@ -241,7 +240,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <div class="logo-secondary">Legacy</div>
+          <div class="logo-secondary">De Legacy</div>
           <p class="footer-tag">Walk in a king, walk out sharper.</p>
         </div>
         <div class="footer-col">
@@ -269,7 +268,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        © 2026 Legacy Barber. All rights reserved.
+        © 2026 De Legacy Barber. All rights reserved.
       </div>
     </div>
   </footer>
