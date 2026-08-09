@@ -274,3 +274,19 @@ document.getElementById("rescheduleModal").addEventListener("click", (e) => {
 bookingsListDiv.style.display = "none";
 phoneLookupDiv.style.display = "block";
 lookupPhoneInput.focus();
+
+// --- HAMBURGER MENU LOGIC (Copied from script.js) ---
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+if (hamburger && navLinks) {
+  hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    navLinks.classList.toggle("open");
+  });
+  navLinks.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      hamburger.classList.remove("active");
+      navLinks.classList.remove("open");
+    });
+  });
+}
