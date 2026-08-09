@@ -308,7 +308,7 @@ if (form) {
       time: selectedSlot,
       cut: selectedCut,
       type: selectedType,
-      phone: phoneRaw || "Not provided",
+      phone: phoneRaw.replace(/\s/g, '').replace(/\+/g, '').trim() || "Not provided",
       address: addressString || "Shop Visit - no address",
       status: "confirmed"
     };
