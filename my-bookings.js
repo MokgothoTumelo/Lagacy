@@ -37,7 +37,7 @@ async function getBookingsByPhone(phone) {
   try {
     const snapshot = await db.collection("bookings")
       .where("phone", "==", cleanPhone(phone))  //  Search by phone number, NOT deviceId
-      .orderBy("date", "asc")
+      //.orderBy("date", "asc")
       .get();
 
     const bookings = [];
