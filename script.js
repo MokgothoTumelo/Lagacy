@@ -251,20 +251,90 @@ function resetFormState() {
 }
 
 function sendWhatsAppMessage(bookingDetails) {
+  // Helper: turn SA numbers into international format (27...)
+  function toInternational(phone) {
+    if (!phone || phone === "Not provided") return null;
+    let cleaned = phone.replace(/\D/g, ""); // keep only digits
+
+    if (cleaned.startsWith("0") && cleaned.length === 10) {
+      cleaned = "27" + cleaned.slice(1); // 0612345678 → 27612345678
+    }
+    if (cleaned.startsWith("27") && cleaned.length === 11) {
+      return cleaned;
+    }
+    return null; // invalid number
+  }
+
+  // ===== 1. Message to the BARBER =====
   let addressLine = "";
   if (bookingDetails.type === "House Call" && bookingDetails.address && bookingDetails.address !== "Not provided") {
-    addressLine = `%0A📍 *Address:* ${encodeURIComponent(bookingDetails.address)}`;
+    addressLine = `%0A *Address:* ${encodeURIComponent(bookingDetails.address)}`;
   }
-  const message = `*DE LEGACY  - NEW BOOKING* %0A%0A` +
-    ` *Client:* ${encodeURIComponent(bookingDetails.name)}%0A` +
-    ` *Date:* ${bookingDetails.date}%0A` +
-    ` *Time:* ${bookingDetails.time}%0A` +
-    ` *Cut:* ${bookingDetails.cut}%0A` +
-    ` *Type:* ${bookingDetails.type}${addressLine}%0A` +
-    ` *Contact:* ${bookingDetails.phone || "Not provided"}%0A%0A` +
-    `*Walk in a king, walk out sharper!* `;
-  const barberWhatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
-  window.open(barberWhatsappUrl, "_blank");
+
+  const barberMessage = `*DE LEGACY - NEW BOOKING*%0A%0A` +
+    `*Client:* ${encodeURIComponent(bookingDetails.name)}%0A` +
+    `*Date:* ${bookingDetails.date}%0A` +
+    `*Time:* ${bookingDetails.time}%0A` +
+    `*Cut:* ${bookingDetails.cut}%0A` +
+    `*Type:* ${bookingDetails.type}${addressLine}%0A` +
+    `*Contact:* ${bookingDetails.phone || "Not provided"}%0A%0A` +
+    `*Walk in a king, walk out sharper!*`;
+
+  const barberUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${barberMessage}`;
+
+  // ===== 2. Confirmation message to the CLIENT =====
+  const clientNumber = toInternational(bookingDetails.phone);
+  let clientUrl = null;
+
+  if (clientNumber) {
+    const clientMessage = `*DE LEGACY BARBER SHOP*%0A%0A` +
+      `Hi ${encodeURIComponent(bookingDetails.name)}!%0A%0A` +
+      `Your appointment is confirmed:%0A` +
+      ` *Date:* ${bookingDetails.date}%0A` +
+      ` *Time:* ${bookingDetails.time}%0A` +
+      ` *Cut:* ${bookingDetails.cut}%0A` +
+      ` *Type:* ${bookingDetails.type}%0A%0A` +
+      `See you soon!%0A` +
+      `*Walk in a king, walk out sharper.*`;
+
+    clientUrl = `https://wa.me/${clientNumber}?text=${clientMessage}`;
+  }
+
+  // ===== Open the links =====
+  // Open barber message first
+  const barberWindow = window.open(barberUrl, "_blank");
+
+  // Then open client confirmation (slight delay so both have a chance)
+  if (clientUrl) {
+    setTimeout(() => {
+      window.open(clientUrl, "_blank");
+    }, 800);
+  }
+
+  // Fallback buttons if popups are blocked
+  let fallbackHtml = "";
+
+  if (!barberWindow || barberWindow.closed || typeof barberWindow.closed === "undefined") {
+    fallbackHtml += `
+      <br><br>
+      <a href="${barberUrl}" target="_blank" class="btn-gold" style="display:inline-block; margin:6px 0;">
+        📱 Notify Barber on WhatsApp
+      </a>
+    `;
+  }
+
+  if (clientUrl) {
+    fallbackHtml += `
+      <br>
+      <a href="${clientUrl}" target="_blank" class="btn-gold" style="display:inline-block; margin:6px 0; background: #25D366;">
+         Send Confirmation to Client
+      </a>
+    `;
+  }
+
+  if (fallbackHtml) {
+    messageEl.innerHTML += fallbackHtml;
+  }
 }
 
 // --- FORM SUBMISSION ---
