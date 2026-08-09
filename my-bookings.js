@@ -1,3 +1,8 @@
+// --- HELPER: Format phone number to pure digits ---
+function cleanPhone(phone) {
+  return phone.replace(/\s/g, '').replace(/\+/g, '').trim();
+}
+
 // --- UI ELEMENTS ---
 const phoneLookupDiv = document.getElementById("phoneLookup");
 const lookupPhoneInput = document.getElementById("lookupPhone");
@@ -31,7 +36,7 @@ function isUpcoming(b) {
 async function getBookingsByPhone(phone) {
   try {
     const snapshot = await db.collection("bookings")
-      .where("phone", "==", phone)  // 🔥 Search by phone number, NOT deviceId
+      .where("phone", "==", cleanPhone(phone))  //  Search by phone number, NOT deviceId
       .orderBy("date", "asc")
       .get();
 
@@ -80,7 +85,8 @@ async function renderBookings(phone) {
   bookingsListDiv.style.display = "block";
   bookingsListDiv.innerHTML = `<div class="loading-msg">Searching for your bookings...</div>`;
 
-  const mine = await getBookingsByPhone(phone);
+  const cleanedPhone = cleanPhone(phone);
+  const mine = await getBookingsByPhone(cleanedPhone);
   mine.sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time));
 
   // If no bookings found
