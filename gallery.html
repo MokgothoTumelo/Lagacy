@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+  <title>De Legacy — Gallery</title>
+  <meta name="description" content="See our work — fades, tapers, buzz cuts, afro trims and more from Legacy Barber Shop." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="hero.jpeg" />
+  <link rel="shortcut icon" href="hero.jpeg">
+  <style>
+    /* Gallery-specific styles (keeps everything else from styles.css) */
+.gallery-section {
+  padding: 20px 20px 80px 20px;
+}
+
+.gallery-head {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.gallery-head h2 {
+  font-family: var(--font-primary);
+  font-size: 44px;
+  letter-spacing: 0.03em;
+  color: var(--blue-bright);
+}
+
+.gallery-head p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 2 columns on phone */
+  gap: 12px;
+}
+
+@media (min-width: 540px) {
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+@media (min-width: 900px) {
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.gallery-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.gallery-card:hover {
+  border-color: var(--blue-bright);
+  transform: translateY(-4px);
+}
+
+.gallery-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: var(--surface);
+}
+
+.gallery-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(145deg, #1A1F26, #14171C);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.gallery-placeholder span {
+  font-family: var(--font-primary);
+  font-size: 28px;
+  color: var(--blue-bright);
+  letter-spacing: 0.05em;
+}
+
+.gallery-info {
+  padding: 16px 18px 20px;
+}
+
+.gallery-info h3 {
+  font-family: var(--font-primary);
+  font-size: 22px;
+  color: var(--blue-bright);
+  letter-spacing: 0.03em;
+}
+
+.gallery-info p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+  </style>
+
+  <script src="db-config.js"></script>
+</head>
+<body>
+  <nav class="nav container">
+    <a href="index.html" class="logo-link">
+      <img src="hero.jpeg" alt="De Legacy Shop" class="logo-icon" />
+      <div class="logo-primary">De Legacy</div>
+    </a>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a class="nav-btn" href="booking.html">BOOK CUT</a>
+      <a class="nav-btn ghost" href="my-bookings.html">BOOKINGS</a>
+      <a class="nav-btn" href="index.html">← HOME</a>
+    </div>
+  </nav>
+
+  <section class="gallery-section container">
+    <div class="gallery-head">
+      <h2>Gallery</h2>
+      <p>Real cuts. Real precision. Walk in a king, walk out sharper.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <!-- Replace the placeholder divs with real <img class="gallery-img" src="your-photo.jpg" alt="..."> when you have photos -->
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>Fade</span>
+          <p>Clean blended sides</p>
+        </div>
+        <div class="gallery-info">
+          <h3>Fade</h3>
+          <p>Clean blended sides</p>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>Taper</span>
+          <p>Sharp tapered edges</p>
+        </div>
+        <div class="gallery-info">
+          <h3>Taper Fade</h3>
+          <p>Sharp tapered edges</p>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>Buzz</span>
+          <p>Short & low maintenance</p>
+        </div>
+        <div class="gallery-info">
+          <h3>Buzz Cut</h3>
+          <p>Short & low maintenance</p>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>Afro</span>
+          <p>Shaped & defined</p>
+        </div>
+        <div class="gallery-info">
+          <h3>Afro Trim</h3>
+          <p>Shaped & defined</p>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>Dreads</span>
+          <p>Shaped & defined</p>
+        </div>
+        <div class="gallery-info">
+          <h3>Dreadlocks</h3>
+          <p>Shaped & defined</p>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>Beard Trim</span>
+          <p>Shaped & defined</p>
+        </div>
+        <div class="gallery-info">
+          <h3>Beard Trim</h3>
+          <p>Shaped & defined</p>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>Mohawk</span>
+          <p>Shaped & defined</p>
+        </div>
+        <div class="gallery-info">
+          <h3>Mohawk</h3>
+          <p>Shaped & defined</p>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-placeholder">
+          <span>+</span>
+          <p>More coming soon</p>
+        </div>
+        <div class="gallery-info">
+          <h3>More Cuts</h3>
+          <p>Fresh work added regularly</p>
+        </div>
+      </article>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="booking.html" class="btn-gold">Book Your Cut</a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo-secondary">De Legacy</div>
+          <p class="footer-tag">Walk in a king, walk out sharper.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="booking.html">Book Now</a></li>
+            <li><a href="my-bookings.html">Bookings</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul class="footer-list">
+            <li><a href="tel:+27673666047">+27 67 366 6047</a></li>
+            <li>📍 Centurion, Olievenhoutbosch, Ext 15</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Hours</h4>
+          <ul class="footer-list">
+            <li>Mon–Sat: 9:00 AM – 5:00 PM</li>
+            <li>Sun: Closed</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 De Legacy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
