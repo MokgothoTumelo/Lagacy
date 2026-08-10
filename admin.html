@@ -9,8 +9,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style>
-    .admin-section { padding: 20px 20px 100px 20px; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+    .admin-section { 
+      padding: 20px 20px 100px 20px; 
+    }
+    .admin-header { 
+      display: flex; 
+      justify-content: space-between;
+      align-items: center; flex-wrap: wrap; 
+      gap: 16px; 
+      margin-bottom: 24px; 
+    }
     .admin-header h2 { font-family: var(--font-primary); font-size: 38px; color: var(--blue-bright); margin: 0; }
     .admin-login-box { max-width: 400px; margin: 40px auto; text-align: center; padding: 40px; }
     .admin-login-box input { margin-bottom: 16px; }
@@ -24,8 +32,34 @@
     .pdf-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
     .pdf-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .loading-msg { text-align: center; color: var(--muted); padding: 40px 0; }
-    .delete-btn { background: transparent; border: 1px solid var(--destructive); color: var(--destructive); padding: 4px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: 0.2s; }
-    .delete-btn:hover { background: var(--destructive); color: white; }
+    .delete-btn { 
+      background: transparent; 
+      border: 1px solid var(--destructive); 
+      color: var(--destructive); 
+      padding: 4px 12px; 
+      border-radius: 20px; 
+      font-size: 12px; 
+      cursor: pointer; 
+      transition: 0.2s; }
+    .delete-btn:hover { 
+      background: var(--destructive); 
+      color: white; }
+    .whatsapp-btn { 
+      background: transparent; 
+      border: 1px solid #25D366; 
+      color: #25D366; 
+      padding: 4px 12px; 
+      border-radius: 20px; 
+      font-size: 12px; 
+      cursor: pointer; 
+      transition: 0.2s; 
+      margin-right: 6px; }
+    .whatsapp-btn:hover { 
+      background: #25D366; 
+      color: white; }
+    .action-cell { 
+      white-space: nowrap; 
+    }
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -71,6 +105,19 @@
   <script>
     const ADMIN_PASSWORD = "legacy2026";
 
+    // Helper: turn SA numbers into international format (27...)
+    function toInternational(phone) {
+      if (!phone || phone === "Not provided" || phone === "-") return null;
+      let cleaned = phone.replace(/\D/g, "");
+      if (cleaned.startsWith("0") && cleaned.length === 10) {
+        cleaned = "27" + cleaned.slice(1);
+      }
+      if (cleaned.startsWith("27") && cleaned.length === 11) {
+        return cleaned;
+      }
+      return null;
+    }
+
     document.getElementById("loginBtn").addEventListener("click", () => {
       const input = document.getElementById("adminPassword").value;
       if (input === ADMIN_PASSWORD) {
@@ -100,55 +147,112 @@
           return;
         }
 
-        let html = `<table>
-          <thead><tr>
-            <th>Date</th><th>Time</th><th>Client</th><th>Cut</th><th>Type</th><th>Contact</th><th>Address</th><th>Action</th>
-          </tr></thead><tbody>`;
+    let html = `<table>
+      <thead><tr>
+        <th>Date</th><th>Time</th><th>Client</th><th>Cut</th><th>Type</th><th>Contact</th><th>Address</th><th>Action</th>
+      </tr></thead><tbody>`;
 
-        let count = 0;
-        snapshot.forEach(doc => {
-          const b = doc.data();
-          const docId = doc.id; // THIS IS THE DOCUMENT ID
-          let dateStr = b.date;
+    let count = 0;
+    snapshot.forEach(doc => {
+      const b = doc.data();
+      const docId = doc.id;
+      let dateStr = b.date;
+      try {
+        dateStr = new Date(b.date + "T00:00:00").toLocaleDateString(undefined, {
+          weekday: "short", year: "numeric", month: "short", day: "numeric"
+        });
+      } catch (e) {}
+
+      // Encode data attributes safely for the WhatsApp button
+      const nameAttr = (b.name || "").replace(/"/g, "&quot;");
+      const phoneAttr = (b.phone || "").replace(/"/g, "&quot;");
+      const cutAttr = (b.cut || "").replace(/"/g, "&quot;");
+      const typeAttr = (b.type || "").replace(/"/g, "&quot;");
+      const dateAttr = (b.date || "").replace(/"/g, "&quot;");
+      const timeAttr = (b.time || "").replace(/"/g, "&quot;");
+
+      html += `<tr>
+        <td><strong>${dateStr}</strong></td>
+        <td>${b.time || '-'}</td>
+        <td>${b.name || '-'}</td>
+        <td><span class="status-badge">${b.cut || '-'}</span></td>
+        <td>${b.type || '-'}</td>
+        <td>${b.phone || '-'}</td>
+        <td style="font-size: 12px; max-width: 150px;">${b.address || '-'}</td>
+        <td class="action-cell">
+          <button class="whatsapp-btn"
+            data-name="${nameAttr}"
+            data-phone="${phoneAttr}"
+            data-cut="${cutAttr}"
+            data-type="${typeAttr}"
+            data-date="${dateAttr}"
+            data-time="${timeAttr}">
+            📱 Confirm
+          </button>
+          <button class="delete-btn" data-docid="${docId}">🗑 Delete</button>
+        </td>
+      </tr>`;
+      count++;
+    });
+
+    html += `</tbody></table>`;
+    html += `<p style="color: var(--muted); margin-top: 12px; font-size: 13px;">Total Appointments: <strong>${count}</strong></p>`;
+
+    container.innerHTML = html;
+
+    // DELETE EVENT LISTENERS
+    container.querySelectorAll(".delete-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const docId = btn.getAttribute("data-docid");
+        if (confirm("Are you sure you want to delete this appointment?")) {
           try {
-            dateStr = new Date(b.date + "T00:00:00").toLocaleDateString(undefined, {
-              weekday: "short", year: "numeric", month: "short", day: "numeric"
-            });
-          } catch (e) {}
+            await db.collection("bookings").doc(docId).delete();
+            loadAppointments();
+          } catch (error) {
+            console.error("Error deleting:", error);
+            alert("Failed to delete. Check console.");
+          }
+        }
+      });
+    });
 
-          html += `<tr>
-            <td><strong>${dateStr}</strong></td>
-            <td>${b.time || '-'}</td>
-            <td>${b.name || '-'}</td>
-            <td><span class="status-badge">${b.cut || '-'}</span></td>
-            <td>${b.type || '-'}</td>
-            <td>${b.phone || '-'}</td>
-            <td style="font-size: 12px; max-width: 150px;">${b.address || '-'}</td>
-            <td><button class="delete-btn" data-docid="${docId}">🗑 Delete</button></td>
-          </tr>`;
-          count++;
-        });
+// WHATSAPP CONFIRMATION EVENT LISTENERS (barber → client)
+container.querySelectorAll(".whatsapp-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const name = btn.getAttribute("data-name") || "Client";
+    const phone = btn.getAttribute("data-phone") || "";
+    const cut = btn.getAttribute("data-cut") || "";
+    const type = btn.getAttribute("data-type") || "";
+    const date = btn.getAttribute("data-date") || "";
+    const time = btn.getAttribute("data-time") || "";
 
-        html += `</tbody></table>`;
-        html += `<p style="color: var(--muted); margin-top: 12px; font-size: 13px;">Total Appointments: <strong>${count}</strong></p>`;
+    const clientNumber = toInternational(phone);
+    if (!clientNumber) {
+      alert("This booking has no valid phone number. Cannot send WhatsApp confirmation.");
+      return;
+    }
 
-        container.innerHTML = html;
+    let dateStr = date;
+    try {
+      dateStr = new Date(date + "T00:00:00").toLocaleDateString(undefined, {
+        weekday: "short", year: "numeric", month: "short", day: "numeric"
+      });
+    } catch (e) {}
 
-        // ADD DELETE EVENT LISTENERS
-        container.querySelectorAll(".delete-btn").forEach(btn => {
-          btn.addEventListener("click", async () => {
-            const docId = btn.getAttribute("data-docid");
-            if (confirm("Are you sure you want to delete this appointment?")) {
-              try {
-                await db.collection("bookings").doc(docId).delete();
-                loadAppointments(); // Reload the table
-              } catch (error) {
-                console.error("Error deleting:", error);
-                alert("Failed to delete. Check console.");
-              }
-            }
-          });
-        });
+    const clientMessage = `*DE LEGACY BARBER SHOP*%0A%0A` +
+      `Hi ${encodeURIComponent(name)}!%0A%0A` +
+      `Your appointment is confirmed:%0A` +
+      ` *Date:* ${dateStr}%0A` +
+      ` *Time:* ${time}%0A` +
+      ` *Cut:* ${cut}%0A` +
+      ` *Type:* ${type}%0A%0A` +
+      `See you soon!%0A` +
+      `*Walk in a king, walk out sharper.*`;
+
+    const clientUrl = `https://wa.me/${clientNumber}?text=${clientMessage}`;
+    window.open(clientUrl, "_blank");
+  });
+});
 
       } catch (error) {
         console.error("Error loading data:", error);
