@@ -386,16 +386,19 @@ if (form) {
     const success = await createBooking(bookingData);
 
     if (success) {
-      sendWhatsAppMessage(bookingData);
-
       let successMsg = `✓ Booked, ${name}! ${selectedCut} at ${selectedSlot} on ${new Date(date + "T00:00:00").toLocaleDateString(undefined, {
         weekday: "short", year: "numeric", month: "short", day: "numeric"
       })}.`;
       if (selectedType === "House Call" && addressString && addressString !== "Not provided") {
         successMsg += `<br>📍 House call address: ${addressString}`;
       }
-      successMsg += `<br>📱 WhatsApp notification sent to barber. We'll confirm shortly.<br><br><a href="my-bookings.html" style="color: var(--gold);">View My Bookings →</a>`;
+      successMsg += `<br>📱 Click the button below to notify the barber on WhatsApp.<br><br><a href="my-bookings.html" style="color: var(--gold);">View My Bookings →</a>`;
+      
       messageEl.innerHTML = successMsg;
+      
+      // Call AFTER setting the success message so fallback links are added, not overwritten
+      sendWhatsAppMessage(bookingData);
+      
       resetFormState();
     } else {
       errorEl.textContent = "Oops! Something went wrong connecting to the server. Try again.";
