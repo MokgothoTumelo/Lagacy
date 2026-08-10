@@ -12,109 +12,102 @@
   <link rel="icon" type="image/png" href="hero.jpeg" />
   <link rel="shortcut icon" href="hero.jpeg">
   <style>
-    /* Gallery-specific styles (keeps everything else from styles.css) */
-.gallery-section {
-  padding: 20px 20px 80px 20px;
-}
+    .gallery-section {
+      padding: 20px 16px 80px 16px;
+    }
 
-.gallery-head {
-  text-align: center;
-  margin-bottom: 36px;
-}
+    .gallery-head {
+      text-align: center;
+      margin-bottom: 28px;
+    }
 
-.gallery-head h2 {
-  font-family: var(--font-primary);
-  font-size: 44px;
-  letter-spacing: 0.03em;
-  color: var(--blue-bright);
-}
+    .gallery-head h2 {
+      font-family: var(--font-primary);
+      font-size: clamp(32px, 8vw, 44px);
+      letter-spacing: 0.03em;
+      color: var(--blue-bright);
+    }
 
-.gallery-head p {
-  color: var(--text-secondary);
-  font-size: 15px;
-  margin-top: 8px;
-}
+    .gallery-head p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-top: 8px;
+      padding: 0 8px;
+    }
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;   /* 2 columns on phone */
-  gap: 12px;
-}
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-@media (min-width: 540px) {
-  .gallery-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-}
+    @media (min-width: 540px) {
+      .gallery-grid {
+        gap: 18px;
+      }
+    }
 
-@media (min-width: 900px) {
-  .gallery-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
+    @media (min-width: 900px) {
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 22px;
+      }
+    }
 
-.gallery-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  overflow: hidden;
-  transition: transform 0.2s, border-color 0.2s;
-}
+    .gallery-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
 
-.gallery-card:hover {
-  border-color: var(--blue-bright);
-  transform: translateY(-4px);
-}
+    .gallery-card:hover {
+      border-color: var(--blue-bright);
+      transform: translateY(-3px);
+    }
 
-.gallery-img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-  background: var(--surface);
-}
+    .gallery-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: var(--surface);
+    }
 
-.gallery-placeholder {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(145deg, #1A1F26, #14171C);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 14px;
-  border-bottom: 1px solid var(--border);
-}
+    .gallery-info {
+      padding: 12px 14px 16px;
+    }
 
-.gallery-placeholder span {
-  font-family: var(--font-primary);
-  font-size: 28px;
-  color: var(--blue-bright);
-  letter-spacing: 0.05em;
-}
+    .gallery-info h3 {
+      font-family: var(--font-primary);
+      font-size: clamp(16px, 4.5vw, 22px);
+      color: var(--blue-bright);
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+    }
 
-.gallery-info {
-  padding: 16px 18px 20px;
-}
+    .gallery-info p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
 
-.gallery-info h3 {
-  font-family: var(--font-primary);
-  font-size: 22px;
-  color: var(--blue-bright);
-  letter-spacing: 0.03em;
-}
-
-.gallery-info p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 4px;
-}
+    @media (max-width: 380px) {
+      .gallery-grid {
+        gap: 10px;
+      }
+      .gallery-info {
+        padding: 10px 10px 14px;
+      }
+      .gallery-info h3 {
+        font-size: 15px;
+      }
+      .gallery-info p {
+        font-size: 11px;
+      }
+    }
   </style>
-
-  <script src="db-config.js"></script>
 </head>
 <body>
   <nav class="nav container">
@@ -143,13 +136,9 @@
     </div>
 
     <div class="gallery-grid">
-      <!-- Replace the placeholder divs with real <img class="gallery-img" src="your-photo.jpg" alt="..."> when you have photos -->
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>Fade</span>
-          <p>Clean blended sides</p>
-        </div>
+        <img class="gallery-img" src="fade.jpeg" alt="Fade haircut" loading="lazy" />
         <div class="gallery-info">
           <h3>Fade</h3>
           <p>Clean blended sides</p>
@@ -157,10 +146,7 @@
       </article>
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>Taper</span>
-          <p>Sharp tapered edges</p>
-        </div>
+        <img class="gallery-img" src="taper.jpeg" alt="Taper Fade haircut" loading="lazy" />
         <div class="gallery-info">
           <h3>Taper Fade</h3>
           <p>Sharp tapered edges</p>
@@ -168,10 +154,7 @@
       </article>
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>Buzz</span>
-          <p>Short & low maintenance</p>
-        </div>
+        <img class="gallery-img" src="buzzcut.jpeg" alt="Buzz Cut" loading="lazy" />
         <div class="gallery-info">
           <h3>Buzz Cut</h3>
           <p>Short & low maintenance</p>
@@ -179,10 +162,7 @@
       </article>
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>Afro</span>
-          <p>Shaped & defined</p>
-        </div>
+        <img class="gallery-img" src="afro.jpeg" alt="Afro Trim" loading="lazy" />
         <div class="gallery-info">
           <h3>Afro Trim</h3>
           <p>Shaped & defined</p>
@@ -190,10 +170,7 @@
       </article>
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>Dreads</span>
-          <p>Shaped & defined</p>
-        </div>
+        <img class="gallery-img" src="Dreadlocks.jpeg" alt="Dreadlocks / Braids" loading="lazy" />
         <div class="gallery-info">
           <h3>Dreadlocks</h3>
           <p>Shaped & defined</p>
@@ -201,37 +178,29 @@
       </article>
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>Beard Trim</span>
-          <p>Shaped & defined</p>
-        </div>
+        <img class="gallery-img" src="Beard.jpeg" alt="Beard Trim" loading="lazy" />
         <div class="gallery-info">
           <h3>Beard Trim</h3>
-          <p>Shaped & defined</p>
+          <p>Sharp lines & clean finish</p>
         </div>
       </article>
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>Mohawk</span>
-          <p>Shaped & defined</p>
-        </div>
+        <img class="gallery-img" src="mohawk.jpeg" alt="Mohawk haircut" loading="lazy" />
         <div class="gallery-info">
           <h3>Mohawk</h3>
-          <p>Shaped & defined</p>
+          <p>Bold design & detail</p>
         </div>
       </article>
 
       <article class="gallery-card">
-        <div class="gallery-placeholder">
-          <span>+</span>
-          <p>More coming soon</p>
-        </div>
+        <img class="gallery-img" src="mid fade.jpeg" alt="Mid Fade haircut" loading="lazy" />
         <div class="gallery-info">
-          <h3>More Cuts</h3>
-          <p>Fresh work added regularly</p>
+          <h3>Mid Fade</h3>
+          <p>Fresh modern cut</p>
         </div>
       </article>
+
     </div>
 
     <div style="text-align: center; margin-top: 40px;">
