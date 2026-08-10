@@ -251,21 +251,7 @@ function resetFormState() {
 }
 
 function sendWhatsAppMessage(bookingDetails) {
-  // Helper: turn SA numbers into international format (27...)
-  function toInternational(phone) {
-    if (!phone || phone === "Not provided") return null;
-    let cleaned = phone.replace(/\D/g, ""); // keep only digits
-
-    if (cleaned.startsWith("0") && cleaned.length === 10) {
-      cleaned = "27" + cleaned.slice(1); // 0612345678 → 27612345678
-    }
-    if (cleaned.startsWith("27") && cleaned.length === 11) {
-      return cleaned;
-    }
-    return null; // invalid number
-  }
-
-  // ===== 1. Message to the BARBER =====
+  // ===== Message to the BARBER only (client notifies barber) =====
   let addressLine = "";
   if (bookingDetails.type === "House Call" && bookingDetails.address && bookingDetails.address !== "Not provided") {
     addressLine = `%0A *Address:* ${encodeURIComponent(bookingDetails.address)}`;
@@ -282,59 +268,18 @@ function sendWhatsAppMessage(bookingDetails) {
 
   const barberUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${barberMessage}`;
 
-  // ===== 2. Confirmation message to the CLIENT =====
-  const clientNumber = toInternational(bookingDetails.phone);
-  let clientUrl = null;
+  // Best-effort popup (often blocked after async)
+  try {
+    window.open(barberUrl, "_blank");
+  } catch (e) {}
 
-  if (clientNumber) {
-    const clientMessage = `*DE LEGACY BARBER SHOP*%0A%0A` +
-      `Hi ${encodeURIComponent(bookingDetails.name)}!%0A%0A` +
-      `Your appointment is confirmed:%0A` +
-      ` *Date:* ${bookingDetails.date}%0A` +
-      ` *Time:* ${bookingDetails.time}%0A` +
-      ` *Cut:* ${bookingDetails.cut}%0A` +
-      ` *Type:* ${bookingDetails.type}%0A%0A` +
-      `See you soon!%0A` +
-      `*Walk in a king, walk out sharper.*`;
-
-    clientUrl = `https://wa.me/${clientNumber}?text=${clientMessage}`;
-  }
-
-  // ===== Open the links =====
-  // Open barber message first
-  const barberWindow = window.open(barberUrl, "_blank");
-
-  // Then open client confirmation (slight delay so both have a chance)
-  if (clientUrl) {
-    setTimeout(() => {
-      window.open(clientUrl, "_blank");
-    }, 800);
-  }
-
-  // Fallback buttons if popups are blocked
-  let fallbackHtml = "";
-
-  if (!barberWindow || barberWindow.closed || typeof barberWindow.closed === "undefined") {
-    fallbackHtml += `
-      <br><br>
-      <a href="${barberUrl}" target="_blank" class="btn-gold" style="display:inline-block; margin:6px 0;">
-        📱 Notify Barber on WhatsApp
-      </a>
-    `;
-  }
-
-  if (clientUrl) {
-    fallbackHtml += `
-      <br>
-      <a href="${clientUrl}" target="_blank" class="btn-gold" style="display:inline-block; margin:6px 0; background: #25D366;">
-         Send Confirmation to Client
-      </a>
-    `;
-  }
-
-  if (fallbackHtml) {
-    messageEl.innerHTML += fallbackHtml;
-  }
+  // Always show the reliable button so the client can notify the barber
+  messageEl.innerHTML += `
+    <br><br>
+    <a href="${barberUrl}" target="_blank" class="btn-gold" style="display:inline-block; margin:6px 0;">
+      📱 Notify Barber on WhatsApp
+    </a>
+  `;
 }
 
 // --- FORM SUBMISSION ---
@@ -372,7 +317,7 @@ if (form) {
 
     const bookingData = {
       id: "bk_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
-      deviceId: getDeviceId(), // ✅ CRITICAL: stored to allow user to see their own bookings
+      deviceId: getDeviceId(),
       date: date,
       name: name,
       time: selectedSlot,
@@ -393,12 +338,13 @@ if (form) {
         successMsg += `<br>📍 House call address: ${addressString}`;
       }
       successMsg += `<br>📱 Click the button below to notify the barber on WhatsApp.<br><br><a href="my-bookings.html" style="color: var(--gold);">View My Bookings →</a>`;
-      
+
+      // Set success message first so the WhatsApp button can be appended after it
       messageEl.innerHTML = successMsg;
-      
-      // Call AFTER setting the success message so fallback links are added, not overwritten
+
+      // Add the "Notify Barber" button
       sendWhatsAppMessage(bookingData);
-      
+
       resetFormState();
     } else {
       errorEl.textContent = "Oops! Something went wrong connecting to the server. Try again.";
